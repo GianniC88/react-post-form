@@ -1,8 +1,24 @@
 import { useState } from 'react'
-
+const url = "https://67c5b4f3351c081993fb1ab6.mockapi.io/api/posts";
 function App() {
+  const [formData, setFormData] = useState({
+    author: "",
+    title: "",
+    body: "",
+    public: true,
 
-  const url = "https://67c5b4f3351c081993fb1ab6.mockapi.io/api/posts";
+  })
+
+  function handleFormData(e) {
+    const { name, value, type, checked } = e.target
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
+
   return (
     <>
       <div className="container">
@@ -22,6 +38,8 @@ function App() {
                       name="author"
                       id="author"
                       placeholder="Inserisci il nome dell'autore"
+                      value={formData.author}
+                      onChange={handleFormData}
                     />
                   </div>
 
@@ -33,6 +51,8 @@ function App() {
                       name="title"
                       id="title"
                       placeholder="Inserisci il titolo del post"
+                      value={formData.title}
+                      onChange={handleFormData}
                     />
                   </div>
 
@@ -44,6 +64,9 @@ function App() {
                       id="body"
                       rows="5"
                       placeholder="Scrivi il contenuto del post..."
+                      value={formData.body}
+
+                      onChange={handleFormData}
                     ></textarea>
                   </div>
 
@@ -53,6 +76,8 @@ function App() {
                       className="form-check-input"
                       name="public"
                       id="public"
+                      checked={formData.public}
+                      onChange={handleFormData}
                     />
                     <label className="form-check-label" htmlFor="public">
                       Rendi il post pubblico
