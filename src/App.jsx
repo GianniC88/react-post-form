@@ -18,6 +18,52 @@ function App() {
     }))
   }
 
+  // ✅ CORRETTA: Funzione per inviare il form
+  async function handleSubmit(e) {
+    e.preventDefault()
+    console.log('📤 Invio dati:', formData)
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      })
+
+      // validation
+      if (!response.ok) {
+        throw new Error('Errore nella richiesta dati')
+      }
+
+      const result = await response.json()
+
+      console.log(' Post creato con successo! Dati ricevuti dal server:', result)
+
+
+      setFormData({
+        author: "",
+        title: "",
+        body: "",
+        public: true,
+      })
+
+      alert('Post creato con successo!')
+      // } 
+      // else {
+
+      //   // console.error(' Errore HTTP:', response.status)
+      //   // alert('Errore durante la creazione del post')
+
+
+
+      // }
+    } catch (error) {
+      console.error(' Errore di rete:', error)
+      alert('Errore di connessione')
+    }
+  }
 
   return (
     <>
@@ -29,7 +75,7 @@ function App() {
                 <h3>Crea un nuovo post</h3>
               </div>
               <div className="card-body">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label htmlFor="author" className="form-label text-uppercase">Autore</label>
                     <input
